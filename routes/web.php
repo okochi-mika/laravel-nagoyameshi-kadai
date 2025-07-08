@@ -25,11 +25,9 @@ Route::resource('products', ProductController::class);
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:admin'], function () {
     Route::get('home', [Admin\HomeController::class, 'index'])->name('home');
+
+    Route::resource('users', Admin\UserController::class)->only(['index', 'show']);
+
+    Route::resource('restaurants', Admin\RestaurantController::class);
 });
 
-Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
-});
-
-Route::resource('restaurants', Admin\RestaurantController::class);
