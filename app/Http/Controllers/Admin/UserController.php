@@ -14,31 +14,21 @@ class UserController extends Controller
         // 検索キーワードを取得
         $keyword = $request->input('keyword');
 
-        // 検索あり・なしで取得データを分ける
-        $query = User::query();
-
-        if (!empty($keyword)) {
-            $query->where('name', 'like', "%{$keyword}%")
-                  ->orWhere('email', 'like', "%{$keyword}%");
+         // キーワードが存在すれば検索を行い、そうでなければ全件取得する
+        if ($keyword) {
+            $users = User::where('name', 'like', "%{$keyword}%")->paginate(15);
+        } else {
+            $users = User::paginate(15);
         }
 
-        // ページネーション（例：10件ずつ）
-        $users = $query->paginate(10)->withQueryString();
+        $total = $users->total();
 
-        return view('admin.users.index', [
-            'users' => $users,
-            'keyword' => $keyword,
-            'total' => $users->total(),
-        ]);
+        return view('admin.users.index', compact('users', 'keyword', 'total'));
     }
 
     // 会員詳細ページを表示
-    public function show($id)
-    {
-        $user = User::findOrFail($id);
-
-        return view('admin.users.show', [
-            'user' => $user,
-        ]);
+    public function show(User $user) {
+        return view('admin.users.show', compact('user'));
     }
+
 }

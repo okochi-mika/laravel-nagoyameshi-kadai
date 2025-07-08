@@ -22,6 +22,7 @@ class RestaurantController extends Controller
         $total = $restaurants->total();
 
         return view('admin.restaurants.index', compact('restaurants', 'keyword', 'total'));
+
     }
 
     public function show(Restaurant $restaurant) {
