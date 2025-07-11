@@ -47,10 +47,14 @@
                     {{-- 最低価格 --}}
                     <div class="row mb-3 align-items-center">
                         <label for="lowest_price" class="col-sm-3 col-form-label">最低価格</label>
-                        <div class="col-sm-9">
-                            <input type="number" name="lowest_price" id="lowest_price"
-                            class="form-control" min="0"
-                            value="{{ old('lowest_price', $restaurant->lowest_price ?? '') }}">
+                        <div class="col-sm-9">                           
+                            <select name="lowest_price" id="lowest_price" class="form-control">
+                                <option value="">選択されていません</option>
+                                <option value="1000" {{ old('lowest_price', $restaurant->lowest_price) == 1000 ? 'selected' : '' }}>1,000円</option>
+                                <option value="2000" {{ old('lowest_price', $restaurant->lowest_price) == 2000 ? 'selected' : '' }}>2,000円</option>
+                                <option value="3000" {{ old('lowest_price', $restaurant->lowest_price) == 3000 ? 'selected' : '' }}>3,000円</option>
+                                <option value="4000" {{ old('lowest_price', $restaurant->lowest_price) == 4000 ? 'selected' : '' }}>4,000円</option>   
+                            </select>
                         </div>
                     </div>
 
@@ -58,9 +62,14 @@
                     <div class="row mb-3 align-items-center">
                         <label for="highest_price" class="col-sm-3 col-form-label">最高価格</label>
                         <div class="col-sm-9">
-                            <input type="number" name="highest_price" id="highest_pricey"
-                            class="form-control" min="0"
-                            value="{{ old('highest_price', $restaurant->highest_price ?? '') }}">
+                            <select name="highest_price" id="highest_price" class="form-control">
+                                <option value="">選択されていません</option>
+                                <option value="4000" {{ old('highest_price', $restaurant->highest_price) == 4000 ? 'selected' : '' }}>4,000円</option>
+                                <option value="5000" {{ old('highest_price', $restaurant->highest_price) == 5000 ? 'selected' : '' }}>5,000円</option>
+                                <option value="6000" {{ old('highest_price', $restaurant->highest_price) == 6000 ? 'selected' : '' }}>6,000円</option>
+                                <option value="7000" {{ old('highest_price', $restaurant->highest_price) == 7000 ? 'selected' : '' }}>7,000円</option>   
+                            </select>
+                            
                         </div>
                     </div>
 
@@ -84,16 +93,33 @@
                     <div class="row mb-3 align-items-center">
                         <label for="opening_time" class="col-sm-3 col-form-label">開店時間</label>
                         <div class="col-sm-9">
-                            <input type="time" name="opening_time" id="opening_time" class="form-control"
-                            value="{{ old('opening_time', $restaurant->opening_time) }}">
+                            <select name="opening_time" id="opening_time" class="form-control">
+                                <option value="">選択されていません</option>
+                                <option value='10:00' {{ old('opening_time', $restaurant->opening_time) == 10:00 ? 'selected' : '' }}>10:00</option>
+                                <option value='11:00' {{ old('opening_time', $restaurant->opening_time) == 11:00 ? 'selected' : '' }}>11:00</option>
+                                <option value='12:00' {{ old('opening_time', $restaurant->opening_time) == 12:00 ? 'selected' : '' }}>12:00</option>
+                                <option value='13:00' {{ old('opening_time', $restaurant->opening_time) == 13:00 ? 'selected' : '' }}>13:00</option> 
+                                <option value='14:00' {{ old('opening_time', $restaurant->opening_time) == 14:00 ? 'selected' : '' }}>14:00</option> 
+                                <option value='15:00' {{ old('opening_time', $restaurant->opening_time) == 15:00 ? 'selected' : '' }}>15:00</option>   
+                            </select>
+                            
                         </div>
                     </div>
+
+                    
 
                    {{-- 閉店時間 --}}
                    <div class="row mb-3 align-items-center">
                         <label for="closing_time" class="col-sm-3 col-form-label">閉店時間</label>
                         <div class="col-sm-9">
-                           <input type="time" name="closing_time" id="closing_time" class="form-control"  value="{{ old('closing_time', $restaurant->closing_time) }}">
+                           <select name="closing_time" id="closing_time" class="form-control">
+                                <option value="">選択されていません</option>
+                                <option value='16:00' {{ old('closing_time', $restaurant->closing_time) == 16:00 ? 'selected' : '' }}>16:00</option>
+                                <option value='17:00' {{ old('closing_time', $restaurant->closing_time) == 17:00 ? 'selected' : '' }}>17:00</option>
+                                <option value='18:00' {{ old('closing_time', $restaurant->closing_time) == 18:00 ? 'selected' : '' }}>18:00</option>
+                                <option value='19:00' {{ old('closing_time', $restaurant->closing_time) == 19:00 ? 'selected' : '' }}>19:00</option> 
+                                <option value='20:00' {{ old('closing_time', $restaurant->closing_time) == 20:00 ? 'selected' : '' }}>20:00</option>   
+                            </select>
                         </div>
                     </div>
 

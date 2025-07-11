@@ -45,8 +45,13 @@
                     <div class="row mb-3 align-items-center">
                         <label for="lowest_price" class="col-sm-3 col-form-label">最低価格</label>
                         <div class="col-sm-9">
-                            <input type="number" name="lowest_price" id="lowest_price" class="form-control" min="0"
-                            value="{{ old('lowest_price') }}">
+                            <select name="lowest_price" id="lowest_price" class="form-control">
+                                <option value="">選択されていません</option>
+                                <option value="1000">1,000円</option>
+                                <option value="2000">2,000円</option>
+                                <option value="3000">3,000円</option>
+                                <option value="4000">4,000円</option>
+                            </select>             
                         </div>
                     </div>
 
@@ -54,8 +59,14 @@
                     <div class="row mb-3 align-items-center">
                         <label for="highest_price" class="col-sm-3 col-form-label">最高価格</label>
                         <div class="col-sm-9">
-                            <input type="number" name="highest_price" id="highest_price" class="form-control" min="0"
-                            value="{{ old('highest_price') }}">
+                            <select name="highest_price" id="highest_price" class="form-control">
+                                <option value="">選択されていません</option>
+                                <option value="4000">4,000円</option>
+                                <option value="5000">5,000円</option>
+                                <option value="6000">6,000円</option>
+                                <option value="7000">7,000円</option>
+                            </select>   
+                            
                         </div>
                     </div>
 
@@ -79,8 +90,15 @@
                     <div class="row mb-3 align-items-center">
                         <label for="opening_time" class="col-sm-3 col-form-label">開店時間</label>
                         <div class="col-sm-9">
-                            <input type="time" name="opening_time" id="opening_time" class="form-control"
-                            value="{{ old('opening_time') }}">
+                            <select name="opening_time" id="opening_time" class="form-control">
+                                <option value="">選択されていません</option>
+                                <option value='10:00'>10:00</option>
+                                <option value='11:00'>11:00</option>
+                                <option value='12:00'>12:00</option>
+                                <option value='13:00'>13:00</option>
+                                <option value='14:00'>14:00</option>
+                                <option value='15:00'>15:00</option>
+                            </select>
                         </div>
                     </div>
 
@@ -88,8 +106,14 @@
                     <div class="row mb-3 align-items-center">
                         <label for="closing_time" class="col-sm-3 col-form-label">閉店時間</label>
                         <div class="col-sm-9">
-                            <input type="time" name="closing_time" id="closing_time" class="form-control"
-                            value="{{ old('closing_time') }}">
+                            <select name="closing_time" id="closing_time" class="form-control">
+                                <option value="">選択されていません</option>
+                                <option value='16:00'>16:00</option>
+                                <option value='17:00'>17:00</option>
+                                <option value='18:00'>18:00</option>
+                                <option value='19:00'>19:00</option>
+                                <option value='20:00'>20:00</option>
+                            </select>
                         </div>
                     </div>
 
