@@ -22,7 +22,7 @@ Route::get('/', function () {
 
 require __DIR__.'/auth.php';
 
-Route::resource('products', ProductController::class);
+// Route::resource('products', ProductController::class);
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:admin'], function () {
     Route::get('home', [Admin\HomeController::class, 'index'])->name('home');
