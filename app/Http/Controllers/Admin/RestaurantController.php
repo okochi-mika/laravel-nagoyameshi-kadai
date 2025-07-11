@@ -8,7 +8,8 @@ use App\Models\Restaurant;
 
 class RestaurantController extends Controller
 {
-    public function index(Request $request) {
+    public function index(Request $request) 
+    {
         // 検索ボックスに入力されたキーワードを取得する
         $keyword = $request->input('keyword');
 
