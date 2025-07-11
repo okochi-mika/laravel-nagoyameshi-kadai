@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('content')
     <div class="col container">
@@ -13,6 +13,9 @@
                             <button type="submit" class="btn text-white shadow-sm nagoyameshi-btn">検索</button>
                         </div>
                     </form>
+                    <a href="{{ route('admin.restaurants.create') }}" class="btn text-white shadow-sm nagoyameshi-btn mb-3">
+                        ＋新規登録
+                    </a>
                 </div>
 
                 <div>

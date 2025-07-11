@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\RestaurantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:admin
 
     Route::resource('users', Admin\UserController::class)->only(['index', 'show']);
 
-    Route::resource('restaurants', Admin\RestaurantController::class);
+    Route::resource('restaurants', Admin\RestaurantController::class)
+    ->only(['index', 'show', 'create', 'store', 'edit', 'update']);
 });
 
