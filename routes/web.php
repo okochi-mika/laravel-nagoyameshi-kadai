@@ -29,7 +29,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:admin
 
     Route::resource('users', Admin\UserController::class)->only(['index', 'show']);
 
-    Route::resource('restaurants', Admin\RestaurantController::class)
-    ->only(['index', 'show', 'create', 'store', 'edit', 'update']);
+    Route::resource('restaurants', Admin\RestaurantController::class);
 });
 
