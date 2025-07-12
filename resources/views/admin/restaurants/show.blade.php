@@ -58,6 +58,15 @@
                     <div class="col-3"><span class="fw-bold">座席数</span></div>
                     <div class="col"><span>{{ $restaurant->seating_capacity }}席</span></div>
                 </div>
+
+                <a href="{{ route('admin.restaurants.edit', $restaurant->id) }}" class="text-primary">編集</a>
+｜
+                <form action="{{ route('admin.restaurants.destroy', $restaurant->id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-link text-danger p-0" onclick="return confirm('本当に削除しますか？')">削除</button>
+                </form>
+
             </div>
         </div>
     </div>

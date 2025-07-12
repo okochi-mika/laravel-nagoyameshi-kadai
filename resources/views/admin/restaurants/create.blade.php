@@ -131,6 +131,7 @@
                         <button type="submit" class="btn text-white shadow-sm nagoyameshi-btn">登録</button>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>
