@@ -95,12 +95,12 @@
                         <div class="col-sm-9">
                             <select name="opening_time" id="opening_time" class="form-control">
                                 <option value="">選択されていません</option>
-                                <option value='10:00' {{ old('opening_time', $restaurant->opening_time) == 10:00 ? 'selected' : '' }}>10:00</option>
-                                <option value='11:00' {{ old('opening_time', $restaurant->opening_time) == 11:00 ? 'selected' : '' }}>11:00</option>
-                                <option value='12:00' {{ old('opening_time', $restaurant->opening_time) == 12:00 ? 'selected' : '' }}>12:00</option>
-                                <option value='13:00' {{ old('opening_time', $restaurant->opening_time) == 13:00 ? 'selected' : '' }}>13:00</option> 
-                                <option value='14:00' {{ old('opening_time', $restaurant->opening_time) == 14:00 ? 'selected' : '' }}>14:00</option> 
-                                <option value='15:00' {{ old('opening_time', $restaurant->opening_time) == 15:00 ? 'selected' : '' }}>15:00</option>   
+                                <option value='10:00' {{ old('opening_time', $restaurant->opening_time) == '10:00' ? 'selected' : '' }}>10:00</option>
+                                <option value='11:00' {{ old('opening_time', $restaurant->opening_time) == '11:00' ? 'selected' : '' }}>11:00</option>
+                                <option value='12:00' {{ old('opening_time', $restaurant->opening_time) == '12:00' ? 'selected' : '' }}>12:00</option>
+                                <option value='13:00' {{ old('opening_time', $restaurant->opening_time) == '13:00' ? 'selected' : '' }}>13:00</option> 
+                                <option value='14:00' {{ old('opening_time', $restaurant->opening_time) == '14:00' ? 'selected' : '' }}>14:00</option> 
+                                <option value='15:00' {{ old('opening_time', $restaurant->opening_time) == '15:00' ? 'selected' : '' }}>15:00</option>   
                             </select>
                             
                         </div>
@@ -114,11 +114,11 @@
                         <div class="col-sm-9">
                            <select name="closing_time" id="closing_time" class="form-control">
                                 <option value="">選択されていません</option>
-                                <option value='16:00' {{ old('closing_time', $restaurant->closing_time) == 16:00 ? 'selected' : '' }}>16:00</option>
-                                <option value='17:00' {{ old('closing_time', $restaurant->closing_time) == 17:00 ? 'selected' : '' }}>17:00</option>
-                                <option value='18:00' {{ old('closing_time', $restaurant->closing_time) == 18:00 ? 'selected' : '' }}>18:00</option>
-                                <option value='19:00' {{ old('closing_time', $restaurant->closing_time) == 19:00 ? 'selected' : '' }}>19:00</option> 
-                                <option value='20:00' {{ old('closing_time', $restaurant->closing_time) == 20:00 ? 'selected' : '' }}>20:00</option>   
+                                <option value='16:00' {{ old('closing_time', $restaurant->closing_time) == '16:00' ? 'selected' : '' }}>16:00</option>
+                                <option value='17:00' {{ old('closing_time', $restaurant->closing_time) == '17:00' ? 'selected' : '' }}>17:00</option>
+                                <option value='18:00' {{ old('closing_time', $restaurant->closing_time) == '18:00' ? 'selected' : '' }}>18:00</option>
+                                <option value='19:00' {{ old('closing_time', $restaurant->closing_time) == '19:00' ? 'selected' : '' }}>19:00</option> 
+                                <option value='20:00' {{ old('closing_time', $restaurant->closing_time) == '20:00' ? 'selected' : '' }}>20:00</option>   
                             </select>
                         </div>
                     </div>

@@ -14,6 +14,12 @@ class RestaurantTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+{
+    parent::setUp();
+    $this->withoutMiddleware();
+}
+
     // 未ログインのユーザーは管理者側の店舗一覧ページにアクセスできない
     public function test_guest_cannot_access_admin_restaurants_index()
     {
