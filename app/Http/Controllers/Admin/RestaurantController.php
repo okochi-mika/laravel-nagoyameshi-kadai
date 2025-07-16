@@ -89,7 +89,8 @@ class RestaurantController extends Controller
 
         $restaurant->name = $request->input('name');
         if ($request->hasFile('image')) {
-            $image = $request->file('image')->store('public/restaurants');
+            $image = $request->file('image')->store('restaurants', 'public');
+
             $restaurant->image = basename($image);
         }
         $restaurant->description = $request->input('description');
