@@ -1,145 +1,172 @@
 @extends('layouts.app')
 
+@push('scripts')
+    <script src="{{ asset('/js/preview.js') }}"></script>
+@endpush
+
 @section('content')
-<div class="col container">
-    <div class="row justify-content-center">
-        <div class="col-xl-7 col-lg-8 col-md-9">
-            <nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.restaurants.index') }}">店舗一覧</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">店舗編集</li>
-                </ol>
-            </nav>
+    <div class="col container">
+        <div class="row justify-content-center">
+            <div class="col-xl-7 col-lg-8 col-md-9">
+                <nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="{{ route('admin.restaurants.index') }}">店舗一覧</a></li>
+                        <li class="breadcrumb-item active"><a href="{{ route('admin.restaurants.show', $restaurant) }}">店舗詳細</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">店舗編集</li>
+                    </ol>
+                </nav>
 
-            <div class="container">
-                <h1 class="text-center mb-4">店舗編集</h1>
+                <h1 class="mb-4 text-center">店舗編集</h1>
 
-                <form method="POST" action="{{ route('admin.restaurants.update', $restaurant->id) }}" enctype="multipart/form-data">
+                <hr class="mb-4">
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form method="POST" action="{{ route('admin.restaurants.update', $restaurant) }}" enctype="multipart/form-data">
                     @csrf
-                    @method('PUT') {{-- ← これ大事！ --}}
-                
+                    @method('patch')
+                    <div class="form-group row mb-3">
+                        <label for="name" class="col-md-5 col-form-label text-md-left fw-bold">店舗名</label>
 
-                    {{-- 店舗名 --}}
-                    <div class="row mb-3 align-items-center">
-                        <label for="name" class="col-sm-3 col-form-label">店舗名</label>
-                        <div class="col-sm-9">
-                            <input type="text" name="name" id="name" value="{{ old('name', $restaurant->name) }}" class="form-control">
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $restaurant->name) }}">
                         </div>
                     </div>
 
+                    <div class="form-group row mb-3">
+                        <label for="image" class="col-md-5 col-form-label text-md-left fw-bold">店舗画像</label>
 
-                    {{-- 店舗画像 --}}
-                    <div class="row mb-3 align-items-center">
-                        <label for="image" class="col-sm-3 col-form-label">店舗画像</label>
-                        <div class="col-sm-9">
-                            <input type="file" name="image" id="image" class="form-control">
+                        <div class="col-md-7">
+                            <input type="file" class="form-control" id="image" name="image">
                         </div>
                     </div>
 
-                    {{-- 説明 --}}
-                    <div class="row mb-3 align-items-center">
-                        <label for="description" class="col-sm-3 col-form-label">説明</label>
-                        <div class="col-sm-9">
-                            <textarea name="description" id="description" class="form-control" rows="4">{{ old('description', $restaurant->description) }}</textarea>
+                    <!-- 選択された画像の表示場所 -->
+                    @if ($restaurant->image !== '')
+                        <div class="row" id="imagePreview"><img src="{{ asset('storage/restaurants/'. $restaurant->image) }}" class="mb-3"></div>
+                    @else
+                        <div class="row" id="imagePreview"></div>
+                    @endif
+
+                    <div class="form-group row mb-3">
+                        <label for="description" class="col-md-5 col-form-label text-md-left fw-bold">説明</label>
+
+                        <div class="col-md-7">
+                            <textarea class="form-control" id="description" name="description" cols="30" rows="5">{{ old('description', $restaurant->description) }}</textarea>
                         </div>
                     </div>
 
-                    {{-- 最低価格 --}}
-                    <div class="row mb-3 align-items-center">
-                        <label for="lowest_price" class="col-sm-3 col-form-label">最低価格</label>
-                        <div class="col-sm-9">                           
-                            <select name="lowest_price" id="lowest_price" class="form-control">
-                                <option value="">選択されていません</option>
-                                <option value="1000" {{ old('lowest_price', $restaurant->lowest_price) == 1000 ? 'selected' : '' }}>1,000円</option>
-                                <option value="2000" {{ old('lowest_price', $restaurant->lowest_price) == 2000 ? 'selected' : '' }}>2,000円</option>
-                                <option value="3000" {{ old('lowest_price', $restaurant->lowest_price) == 3000 ? 'selected' : '' }}>3,000円</option>
-                                <option value="4000" {{ old('lowest_price', $restaurant->lowest_price) == 4000 ? 'selected' : '' }}>4,000円</option>   
+                    <div class="form-group row mb-3">
+                        <label for="lowest_price" class="col-md-5 col-form-label text-md-left fw-bold">最低価格</label>
+
+                        <div class="col-md-7">
+                            <select class="form-control form-select" id="lowest_price" name="lowest_price">
+                                <option value="" hidden>選択してください</option>
+                                @for ($i = 0; $i < 20; $i++)
+                                    {{ $lowest_price = 500 + (500 * $i) }}
+                                    @if ($lowest_price == old('lowest_price', $restaurant->lowest_price))
+                                        <option value="{{ $lowest_price }}" selected>{{ number_format($lowest_price) }}円</option>
+                                    @else
+                                        <option value="{{ $lowest_price }}">{{ number_format($lowest_price) }}円</option>
+                                    @endif
+                                @endfor
                             </select>
                         </div>
                     </div>
 
-                    {{-- 最高価格 --}}
-                    <div class="row mb-3 align-items-center">
-                        <label for="highest_price" class="col-sm-3 col-form-label">最高価格</label>
-                        <div class="col-sm-9">
-                            <select name="highest_price" id="highest_price" class="form-control">
-                                <option value="">選択されていません</option>
-                                <option value="4000" {{ old('highest_price', $restaurant->highest_price) == 4000 ? 'selected' : '' }}>4,000円</option>
-                                <option value="5000" {{ old('highest_price', $restaurant->highest_price) == 5000 ? 'selected' : '' }}>5,000円</option>
-                                <option value="6000" {{ old('highest_price', $restaurant->highest_price) == 6000 ? 'selected' : '' }}>6,000円</option>
-                                <option value="7000" {{ old('highest_price', $restaurant->highest_price) == 7000 ? 'selected' : '' }}>7,000円</option>   
-                            </select>
-                            
-                        </div>
-                    </div>
+                    <div class="form-group row mb-3">
+                        <label for="highest_price" class="col-md-5 col-form-label text-md-left fw-bold">最高価格</label>
 
-                    {{-- 郵便番号 --}}
-                    <div class="row mb-3 align-items-center">
-                        <label for="postal_code" class="col-sm-3 col-form-label">郵便番号</label>
-                        <div class="col-sm-9">
-                            <input type="text" name="postal_code" id="postal_code" class="form-control" value="{{ old('postal_code', $restaurant->postal_code) }}">
-                        </div>
-                    </div>
-
-                    {{-- 住所 --}}
-                    <div class="row mb-3 align-items-center">
-                        <label for="address" class="col-sm-3 col-form-label">住所</label>
-                        <div class="col-sm-9">
-                            <input type="text" name="address" id="address" class="form-control" value="{{ old('address', $restaurant->address) }}">
-                        </div>
-                    </div>
-
-                    {{-- 開店時間 --}}
-                    <div class="row mb-3 align-items-center">
-                        <label for="opening_time" class="col-sm-3 col-form-label">開店時間</label>
-                        <div class="col-sm-9">
-                            <select name="opening_time" id="opening_time" class="form-control">
-                                <option value="">選択されていません</option>
-                                <option value='10:00' {{ old('opening_time', $restaurant->opening_time) == '10:00' ? 'selected' : '' }}>10:00</option>
-                                <option value='11:00' {{ old('opening_time', $restaurant->opening_time) == '11:00' ? 'selected' : '' }}>11:00</option>
-                                <option value='12:00' {{ old('opening_time', $restaurant->opening_time) == '12:00' ? 'selected' : '' }}>12:00</option>
-                                <option value='13:00' {{ old('opening_time', $restaurant->opening_time) == '13:00' ? 'selected' : '' }}>13:00</option> 
-                                <option value='14:00' {{ old('opening_time', $restaurant->opening_time) == '14:00' ? 'selected' : '' }}>14:00</option> 
-                                <option value='15:00' {{ old('opening_time', $restaurant->opening_time) == '15:00' ? 'selected' : '' }}>15:00</option>   
-                            </select>
-                            
-                        </div>
-                    </div>
-
-                    
-
-                   {{-- 閉店時間 --}}
-                   <div class="row mb-3 align-items-center">
-                        <label for="closing_time" class="col-sm-3 col-form-label">閉店時間</label>
-                        <div class="col-sm-9">
-                           <select name="closing_time" id="closing_time" class="form-control">
-                                <option value="">選択されていません</option>
-                                <option value='16:00' {{ old('closing_time', $restaurant->closing_time) == '16:00' ? 'selected' : '' }}>16:00</option>
-                                <option value='17:00' {{ old('closing_time', $restaurant->closing_time) == '17:00' ? 'selected' : '' }}>17:00</option>
-                                <option value='18:00' {{ old('closing_time', $restaurant->closing_time) == '18:00' ? 'selected' : '' }}>18:00</option>
-                                <option value='19:00' {{ old('closing_time', $restaurant->closing_time) == '19:00' ? 'selected' : '' }}>19:00</option> 
-                                <option value='20:00' {{ old('closing_time', $restaurant->closing_time) == '20:00' ? 'selected' : '' }}>20:00</option>   
+                        <div class="col-md-7">
+                            <select class="form-control form-select" id="highest_price" name="highest_price">
+                                <option value="" hidden>選択してください</option>
+                                @for ($i = 0; $i < 20; $i++)
+                                    {{ $highest_price = 500 + (500 * $i) }}
+                                    @if ($highest_price == old('highest_price', $restaurant->highest_price))
+                                        <option value="{{ $highest_price }}" selected>{{ number_format($highest_price) }}円</option>
+                                    @else
+                                        <option value="{{ $highest_price }}">{{ number_format($highest_price) }}円</option>
+                                    @endif
+                                @endfor
                             </select>
                         </div>
                     </div>
 
+                    <div class="form-group row mb-3">
+                        <label for="postal_code" class="col-md-5 col-form-label text-md-left fw-bold">郵便番号</label>
 
-                    {{-- 座席数 --}}
-                    <div class="row mb-3 align-items-center">
-                        <label for="seating_capacity" class="col-sm-3 col-form-label">座席数</label>
-                        <div class="col-sm-9">
-                            <input type="number" name="seating_capacity" id="seating_capacity"
-                            class="form-control" min="0"
-                            value="{{ old('seating_capacity', $restaurant->seating_capacity ?? '') }}">
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" id="postal_code" name="postal_code" value="{{ old('postal_code', $restaurant->postal_code) }}">
                         </div>
                     </div>
 
-                    <div class="text-center">
-                        <button type="submit" class="btn text-white shadow-sm nagoyameshi-btn">更新</button>
+                    <div class="form-group row mb-3">
+                        <label for="address" class="col-md-5 col-form-label text-md-left fw-bold">住所</label>
+
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" id="address" name="address" value="{{ old('address', $restaurant->address) }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-3">
+                        <label for="opening_time" class="col-md-5 col-form-label text-md-left fw-bold">開店時間</label>
+
+                        <div class="col-md-7">
+                            <select class="form-control form-select" id="opening_time" name="opening_time">
+                                <option value="" hidden>選択してください</option>
+                                @for ($i = 0; $i < 48; $i++)
+                                    {{ $opening_time = date('H:i', strtotime('00:00 +' . $i * 30 .' minute')) }}
+                                    @if ($opening_time == old('opening_time', date('H:i', strtotime($restaurant->opening_time))))
+                                        <option value="{{ $opening_time }}" selected>{{ $opening_time }}</option>
+                                    @else
+                                        <option value="{{ $opening_time }}">{{ $opening_time }}</option>
+                                    @endif
+                                @endfor
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-3">
+                        <label for="closing_time" class="col-md-5 col-form-label text-md-left fw-bold">閉店時間</label>
+
+                        <div class="col-md-7">
+                            <select class="form-control form-select" id="closing_time" name="closing_time">
+                                <option value="" hidden>選択してください</option>
+                                @for ($i = 0; $i < 48; $i++)
+                                    {{ $closing_time = date('H:i', strtotime('00:00 +' . $i * 30 .' minute')) }}
+                                    @if ($closing_time == old('closing_time', date('H:i', strtotime($restaurant->closing_time))))
+                                        <option value="{{ $closing_time }}" selected>{{ $closing_time }}</option>
+                                    @else
+                                        <option value="{{ $closing_time }}">{{ $closing_time }}</option>
+                                    @endif
+                                @endfor
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-3">
+                        <label for="seating_capacity" class="col-md-5 col-form-label text-md-left fw-bold">座席数</label>
+
+                        <div class="col-md-7">
+                            <input type="number" class="form-control" id="seating_capacity" name="seating_capacity" value="{{ old('seating_capacity', $restaurant->seating_capacity) }}">
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="form-group d-flex justify-content-center mb-4">
+                        <button type="submit" class="btn text-white shadow-sm w-50 nagoyameshi-btn">更新</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-</div>
 @endsection
