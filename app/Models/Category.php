@@ -10,5 +10,12 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = ['name'];
+
+    // Categoryモデル
+public function restaurants()
+{
+    return $this->belongsToMany(Restaurant::class);
+}
+
 }
 

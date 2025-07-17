@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Restaurant extends Model
 {
     use HasFactory;
+
+    // Restaurantモデル
+public function categories()
+{
+    return $this->belongsToMany(Category::class);
 }
+
+}
+

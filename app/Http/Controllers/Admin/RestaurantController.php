@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Restaurant;
+use App\Models\Category;
 
 class RestaurantController extends Controller
 {
-    public function index(Request $request) 
-    {
+    public function index(Request $request) {
         // 検索ボックスに入力されたキーワードを取得する
         $keyword = $request->input('keyword');
 
@@ -23,15 +23,12 @@ class RestaurantController extends Controller
         $total = $restaurants->total();
 
         return view('admin.restaurants.index', compact('restaurants', 'keyword', 'total'));
-
-    }
-
-    public function show(Restaurant $restaurant) {
-        return view('admin.restaurants.show', compact('restaurant'));
     }
 
     public function create() {
-        return view('admin.restaurants.create');
+        $categories = Category::all();
+
+        return view('admin.restaurants.create', compact('categories'));
     }
 
     public function store(Request $request) {
@@ -66,11 +63,23 @@ class RestaurantController extends Controller
         $restaurant->seating_capacity = $request->input('seating_capacity');
         $restaurant->save();
 
+        $category_ids = array_filter($request->input('category_ids', []));
+        $restaurant->categories()->sync($category_ids);
+
         return redirect()->route('admin.restaurants.index')->with('flash_message', '店舗を登録しました。');
     }
 
+    public function show(Restaurant $restaurant) {
+        return view('admin.restaurants.show', compact('restaurant'));
+    }
+
     public function edit(Restaurant $restaurant) {
-        return view('admin.restaurants.edit', compact('restaurant'));
+        $categories = Category::all();
+
+        // 設定されたカテゴリのIDを配列化する
+        $category_ids = $restaurant->categories->pluck('id')->toArray();
+
+        return view('admin.restaurants.edit', compact('restaurant', 'categories', 'category_ids'));
     }
 
     public function update(Request $request, Restaurant $restaurant) {
@@ -89,8 +98,7 @@ class RestaurantController extends Controller
 
         $restaurant->name = $request->input('name');
         if ($request->hasFile('image')) {
-            $image = $request->file('image')->store('restaurants', 'public');
-
+            $image = $request->file('image')->store('public/restaurants');
             $restaurant->image = basename($image);
         }
         $restaurant->description = $request->input('description');
@@ -102,6 +110,10 @@ class RestaurantController extends Controller
         $restaurant->closing_time = $request->input('closing_time');
         $restaurant->seating_capacity = $request->input('seating_capacity');
         $restaurant->save();
+
+        $category_ids = array_filter($request->input('category_ids', []));
+
+        $restaurant->categories()->sync($category_ids);
 
         return redirect()->route('admin.restaurants.show', $restaurant)->with('flash_message', '店舗を編集しました。');
     }
