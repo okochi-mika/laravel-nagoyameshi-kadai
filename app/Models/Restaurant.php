@@ -15,5 +15,11 @@ public function categories()
     return $this->belongsToMany(Category::class);
 }
 
+public function regular_holidays()
+{
+    return $this->belongsToMany(Category::class);
+}
+
+
 }
 
