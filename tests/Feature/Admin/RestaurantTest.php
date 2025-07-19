@@ -203,7 +203,7 @@ class RestaurantTest extends TestCase
         ];
 
         $response = $this->actingAs($user)->patch(route('admin.restaurants.update', $old_restaurant), $new_restaurant_data);
-
+        unset($new_restaurant_data['category_ids'], $new_restaurant_data['regular_holiday_ids']);
         $this->assertDatabaseMissing('restaurants', $new_restaurant_data);
 
         foreach ($category_ids as $category_id) {
