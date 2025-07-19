@@ -9,12 +9,21 @@ use App\Models\User;
 
 class UserController extends Controller
 {
+    private function denyIfAdmin()
+    {
+        if (Auth::user()->role === 'admin') {
+            abort(403); // 管理者はアクセス禁止
+        }
+    }
+
     public function index() {
+        $this->denyIfAdmin();
         $user = Auth::user();
         return view('user.index', compact('user'));
     }
 
     public function edit(User $user) {
+        $this->denyIfAdmin();
         if ($user->id !== Auth::id()) {
             return redirect()->route('user.index')->with('error_message', '不正なアクセスです。');
         }
@@ -23,6 +32,7 @@ class UserController extends Controller
     }
 
     public function update(Request $request, User $user) {
+        $this->denyIfAdmin();
         if ($user->id !== Auth::id()) {
             return redirect()->route('user.index')->with('error_message', '不正なアクセスです。');
         }
