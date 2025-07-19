@@ -17,7 +17,7 @@ public function categories()
 
 public function regular_holidays()
 {
-    return $this->belongsToMany(Category::class);
+    return $this->belongsToMany(RegularHoliday::class);
 }
 
 
