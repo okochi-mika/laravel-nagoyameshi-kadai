@@ -18,12 +18,8 @@ class RestaurantController extends Controller
         $sorts = [
             '掲載日が新しい順' => 'created_at desc',
             '価格が安い順' => 'lowest_price asc',
-<<<<<<< HEAD
             '評価が高い順' => 'rating desc',
             '予約数が多い順' => 'popular desc'
-=======
-            '評価が高い順' => 'rating desc'
->>>>>>> c1aa1705c7cfc9f8f55cfecaebc30c71b8a41253
         ];
 
         $sort_query = [];

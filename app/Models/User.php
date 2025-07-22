@@ -54,7 +54,6 @@ class User extends Authenticatable
         return $this->hasMany(Review::class);
     }
 
-<<<<<<< HEAD
     public function reservations() {
         return $this->hasMany(Reservation::class);
     }
@@ -62,6 +61,4 @@ class User extends Authenticatable
     public function favorite_restaurants() {
         return $this->belongsToMany(Restaurant::class)->withTimestamps();
     }
-=======
->>>>>>> c1aa1705c7cfc9f8f55cfecaebc30c71b8a41253
 }
