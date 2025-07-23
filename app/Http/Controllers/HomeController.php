@@ -15,4 +15,12 @@ class HomeController extends Controller
 
         return view('home', compact('highly_rated_restaurants', 'categories', 'new_restaurants'));
     }
+
+        public function reviews() {
+        return $this->hasMany(Review::class);
+    }
+
+    public function ratingSortable($query, $direction) {
+        return $query->withAvg('reviews', 'score')->orderBy('reviews_avg_score', $direction);
+    }
 }
