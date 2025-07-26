@@ -33,8 +33,6 @@ Route::group(['middleware' => 'guest:admin'], function () {
     Route::get('company', [CompanyController::class, 'index'])->name('company.index');
     Route::get('terms', [TermController::class, 'index'])->name('terms.index');
 
-//======== 後略 ========
-
     Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::resource('user', UserController::class)->only(['index', 'edit', 'update']);
 
