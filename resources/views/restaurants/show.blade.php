@@ -158,6 +158,8 @@
                             @endif
                         </div>
                     </div>  
+                </div>
+
                     
                     @guest
                         <form action="{{ route('favorites.store', $restaurant->id) }}" method="post" class="text-center">      
